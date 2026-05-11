@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>com.dinuberinde</groupId>
+  <artifactId>java-stomp-client</artifactId>
+  <versioning>
+    <versions>
+      <version>1.0-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20260511122009</lastUpdated>
+  </versioning>
+</metadata>
