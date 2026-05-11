@@ -1,0 +1,45 @@
+name: Publish Maven Repository to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      - name: Build and deploy artifacts to local staging
+        run: mvn deploy -DskipTests --batch-mode
+
+      - name: Publish artifacts to gh-pages
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          if git ls-remote --exit-code origin gh-pages; then
+            git fetch origin gh-pages
+            git worktree add gh-pages-out gh-pages
+          else
+            git worktree add --orphan -b gh-pages gh-pages-out
+          fi
+
+          rsync -av --ignore-existing target/mvn-repo/ gh-pages-out/
+
+          cd gh-pages-out
+          git add -A
+          git diff --cached --quiet || git commit -m "chore: publish maven artifacts from ${GITHUB_SHA::7}"
+          git push origin gh-pages
