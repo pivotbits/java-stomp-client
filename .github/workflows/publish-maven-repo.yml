@@ -26,11 +26,8 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Build and deploy artifacts to local staging
-        run: mvn deploy -DskipTests --batch-mode
-
       - name: Build and deploy artifacts to cloud repo
-        run: mvn deploy -DskipTests --batch-mode -DrepositoryId="${REPO_ID}" -Durl="${REPO_URL}"
+        run: mvn deploy -DskipTests --batch-mode -DrepositoryId="${CLOUD_REPO_ID}" -Durl="${CLOUD_REPO_URL}"
 
       - name: Publish artifacts to gh-pages
         run: |
