@@ -30,9 +30,7 @@ jobs:
         run: mvn deploy -DskipTests --batch-mode
 
       - name: Build and deploy artifacts to cloud repo
-        run: mvn deploy -DskipTests --batch-mode \
-          -DrepositoryId="${REPO_ID}" \
-          -Durl="${REPO_URL}"
+        run: mvn deploy -DskipTests --batch-mode -DrepositoryId="${REPO_ID}" -Durl="${REPO_URL}"
 
       - name: Publish artifacts to gh-pages
         run: |
