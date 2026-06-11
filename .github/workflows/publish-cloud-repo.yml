@@ -28,8 +28,5 @@ jobs:
           KOSBUILD_SECRET_URL: ${{ secrets.KOSBUILD_SECRET_URL }}
           KOSBUILD_SECRET_PASSWORD: ${{ secrets.KOSBUILD_SECRET_PASSWORD }}
 
-          CLOUD_REPO_ID: pivotbits.public
-          CLOUD_REPO_URL: https://kondra.mycloudrepo.io/repositories/pivotbits-public
-
         working-directory: ./${{ github.event.repository.name }}
         run: kos_build_handler.sh automation .github/cloud-deployment.json

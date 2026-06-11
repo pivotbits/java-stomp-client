@@ -1,4 +1,4 @@
 {
   "default_keyset": "test.pivotbits",
-  "build_cmd": "mvn deploy -DskipTests --batch-mode -DaltDeploymentRepository=\"${CLOUD_REPO_ID}::default::${CLOUD_REPO_URL}\""
+  "build_cmd": "mvn deploy -DskipTests --batch-mode -DaltDeploymentRepository=\"pivotbits.public::default::https://kondra.mycloudrepo.io/repositories/pivotbits-public\""
 }
