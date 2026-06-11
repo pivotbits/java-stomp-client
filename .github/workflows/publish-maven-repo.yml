@@ -11,6 +11,10 @@ jobs:
     permissions:
       contents: write
 
+    env:
+      CLOUD_REPO_ID: pivotbits.public
+      CLOUD_REPO_URL: https://kondra.mycloudrepo.io/repositories/pivotbits-public
+
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
@@ -24,6 +28,11 @@ jobs:
 
       - name: Build and deploy artifacts to local staging
         run: mvn deploy -DskipTests --batch-mode
+
+      - name: Build and deploy artifacts to cloud repo
+        run: mvn deploy -DskipTests --batch-mode \
+          -DrepositoryId="${REPO_ID}" \
+          -Durl="${REPO_URL}"
 
       - name: Publish artifacts to gh-pages
         run: |
