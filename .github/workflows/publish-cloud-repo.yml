@@ -1,0 +1,34 @@
+name: development-java
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  qrcode_java_build:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/kosdev-code/kos-buildpublish/kos_builder:dockerimage
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.github_token }}
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v5
+        with:
+          repository: ${{ github.repository }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          path: ${{ github.event.repository.name }}
+          lfs: true
+
+      - name: Build and Publish
+        env:
+          KOSBUILD_SECRET_URL: ${{ secrets.KOSBUILD_SECRET_URL }}
+          KOSBUILD_SECRET_PASSWORD: ${{ secrets.KOSBUILD_SECRET_PASSWORD }}
+          CLOUD_REPO_ID: pivotbits.public
+          CLOUD_REPO_URL: https://kondra.mycloudrepo.io/repositories/pivotbits-public
+
+        working-directory: ./${{ github.event.repository.name }}
+        run: mvn deploy -DskipTests --batch-mode -DaltDeploymentRepository="${CLOUD_REPO_ID}::default::${CLOUD_REPO_URL}"
