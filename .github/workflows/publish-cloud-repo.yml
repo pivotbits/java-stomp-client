@@ -1,12 +1,12 @@
-name: development-java
+name: Deploy to Cloud Repo
 on:
   push:
     branches:
-      - main
+      - master
   workflow_dispatch:
 
 jobs:
-  qrcode_java_build:
+  cloud-repo-deployment:
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/kosdev-code/kos-buildpublish/kos_builder:dockerimage
@@ -27,8 +27,9 @@ jobs:
         env:
           KOSBUILD_SECRET_URL: ${{ secrets.KOSBUILD_SECRET_URL }}
           KOSBUILD_SECRET_PASSWORD: ${{ secrets.KOSBUILD_SECRET_PASSWORD }}
+
           CLOUD_REPO_ID: pivotbits.public
           CLOUD_REPO_URL: https://kondra.mycloudrepo.io/repositories/pivotbits-public
 
         working-directory: ./${{ github.event.repository.name }}
-        run: mvn deploy -DskipTests --batch-mode -DaltDeploymentRepository="${CLOUD_REPO_ID}::default::${CLOUD_REPO_URL}"
+        run: kos_build_handler.sh automation .github/cloud-deployment.json
